@@ -36,7 +36,9 @@ def main():
     tr_time = time_te - time_tr
     te_time = time_fin - time_te
 
-    utils.save_json('performance_tmp.json', dict_best)
+    dict_best.update(dataset.config)
+    dict_best.update(agent.config)
+    utils.save_json('result.json', dict_best)
 
     print("Time (TR): %.5f [sec]" \
         %(tr_time))

@@ -57,7 +57,6 @@ def training(agent, dataset, batch_size, epochs):
             dic_measure['score'].extend(list(step_dict['losses']['l2_b']))
             if(minibatch['terminate']): break
 
-        print(len(dic_measure['label']), len(dic_measure['score']))
         auroc_tmp = utils.measure_auroc( \
             dic_measure['label'], dic_measure['score'], \
             savepath=os.path.join(savedir, 'gen', 'auroc_%08d.png' %(epoch)))
@@ -92,8 +91,7 @@ def test(agent, dataset):
     for idx_model, path_model in enumerate(list_model):
         list_model[idx_model] = path_model.split('/')[-1]
 
-    dict_best = {'best_model': '', \
-        'auroc': 0, 'auroc_flip': 0, 'loss': 0}
+    dict_best = {'name_best': '', 'auroc': 0, 'loss': 0}
 
     for idx_model, path_model in enumerate(list_model):
 
@@ -123,7 +121,6 @@ def test(agent, dataset):
         if(dict_best['auroc'] < auroc_tmp):
             dict_best['name_best'] = path_model
             dict_best['auroc'] = float(auroc_tmp)
-            dict_best['auroc_flip'] = float(max(auroc_tmp, 1-auroc_tmp))
-            dict_best['loss'] = float(np.average(list(df_score.loc[df_score['tag'] == 'good']['mse'])))
+            dict_best['loss'] = float(np.average(list(df_score.loc[df_score['label'] == 0]['score'])))
 
     return dict_best, len(list_model)

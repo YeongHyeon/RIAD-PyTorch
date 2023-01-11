@@ -37,10 +37,13 @@ def read_json(path):
 
 def save_json(path, dic):
 
+    list_del = []
     for idx_key, name_key in enumerate(dic.keys()):
         value = dic[name_key]
-        if(isinstance(value, np.int64)): dic[name_key] = int(value)
+        if(isinstance(value, int) or isinstance(value, float)): pass
+        elif(isinstance(value, np.int64)): dic[name_key] = int(value)
         elif(isinstance(value, np.float32)): dic[name_key] = float(value)
+        else: dic[name_key] = str(value)
 
     with open(path, 'w') as json_file:
         json.dump(dic, json_file)
