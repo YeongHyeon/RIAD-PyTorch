@@ -30,8 +30,18 @@ PyTorch implementation of "Reconstruction by inpainting for visual anomaly detec
   <img src="./figures/algo3.png" width="750">
 </div>
 
-## Results
-(preparing)
+## Experiments (preparing)
+
+### Anomaly Detection using MNIST dataset
+
+#### Setting
+  * Normal (Good): 1
+  * Abnormal (Not-good): 0, 2, 3, 4, 5, 6, 7, 8, 9 (other than 1)
+
+#### Results
+<div align="center">
+  <img src="./figures/generation.png" width="750"> <img src="./figures/auroc.png" width="250">
+</div>
 
 ## Requirements
 * PyTorch 1.11.0
