@@ -16,21 +16,29 @@ PyTorch implementation of "Reconstruction by inpainting for visual anomaly detec
 ### Training Strategy
 
 #### Overal Procedure
-<div align="center">
-  <img src="./figures/algo1.png" width="750">
-</div>
+<img src="./figures/algo1.png" width="750">
 
 #### Preprocessing
-<div align="center">
-  <img src="./figures/algo2.png" width="750">
-</div>
+<img src="./figures/algo2.png" width="750">
 
 #### Inference and Postprocessing
-<div align="center">
-  <img src="./figures/algo3.png" width="750">
-</div>
+<img src="./figures/algo3.png" width="750">
 
 ## Experiments (preparing)
+
+### Preparing for Disjoint Masking
+
+#### Input (Given)
+<img src="./figures/image.png" width="200"></br>  
+
+#### Set of disjoint masks
+<img src="./figures/mask.png" width="600"></br>  
+Disjoint masks with $k=\{2, 4\}$.  
+First and second row shows the mask of $k=2$ and $k=4$ respectively.  
+Each column shows the $i$-$th$ mask for each cell size $k$.  
+
+#### Set of mask applied input
+<img src="./figures/masked.png" width="600"></br>  
 
 ### Anomaly Detection using MNIST dataset
 
@@ -39,9 +47,8 @@ PyTorch implementation of "Reconstruction by inpainting for visual anomaly detec
   * Abnormal (Not-good): 0, 2, 3, 4, 5, 6, 7, 8, 9 (other than 1)
 
 #### Results
-<div align="center">
-  <img src="./figures/generation.png" width="750"> <img src="./figures/auroc.png" width="250">
-</div>
+<img src="./figures/generation.png" width="750"></br>  
+<img src="./figures/auroc.png" width="250"></br>  
 
 ## Requirements
 * PyTorch 1.11.0
