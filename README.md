@@ -48,7 +48,7 @@ Each column shows the $i$-$th$ mask for each cell size $k$.
 
 #### Results
 <img src="./figures/generation.png" width="750"></br>  
-<img src="./figures/auroc.png" width="250"></br>  
+<img src="./figures/auroc.png" width="300"></br>  
 
 ## Requirements
 * PyTorch 1.11.0
