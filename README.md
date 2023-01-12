@@ -24,7 +24,7 @@ PyTorch implementation of "Reconstruction by inpainting for visual anomaly detec
 #### Inference and Postprocessing
 <img src="./figures/algo3.png" width="750">
 
-## Experiments (preparing)
+## Experiments
 
 ### Preparing for Disjoint Masking
 
@@ -47,29 +47,37 @@ Each column shows the $i$-$th$ mask for each cell size $k$.
   * Abnormal (Not-good): 0, 2, 3, 4, 5, 6, 7, 8, 9 (other than 1)
 
 #### Results
-<img src="./figures/generation.png" width="750"></br>  
-<img src="./figures/auroc.png" width="300"></br>  
+<strong>Loss convergence</strong>  
+<img src="./figures/loss.png" width="750"></br>  
 
+<strong>Reconstruction</strong>  
+<img src="./figures/generation.png" width="750"></br>  
+
+<strong>Anomaly detection performance</strong>  
+<img src="./figures/auroc.png" width="400"></br>  
+
+<strong>Result of training (result.json)</strong>  
 <details>
   <summary>root</summary>  
-* name_best:"model_2_best_auroc.pth"  
-* auroc:0.9974551381667722  
-* loss:0.0017763811201996548  
-* select_norm:1  
-* masking_mode:"disjoint_mask"  
-* disjoint_n:3  
-* nn:2000  
-* dim_h:28  
-* dim_w:28  
-* dim_c:1  
-* ksize:3  
-* mode_optim:"adam"  
-* learning_rate:0.001  
-* mode_lr:0  
-* path_ckpt:"Checkpoint"  
-* ngpu:1  
-* device:"cuda"  
-* filters:"[1, 64, 128, 256, 512]"  
+
+name_best:"model_2_best_auroc.pth"  
+auroc:0.9974551381667722  
+loss:0.0017763811201996548  
+select_norm:1  
+masking_mode:"disjoint_mask"  
+disjoint_n:3  
+nn:2000  
+dim_h:28  
+dim_w:28  
+dim_c:1  
+ksize:3  
+mode_optim:"adam"  
+learning_rate:0.001  
+mode_lr:0  
+path_ckpt:"Checkpoint"  
+ngpu:1  
+device:"cuda"  
+filters:"[1, 64, 128, 256, 512]"  
 </details>
 
 ## Requirements
