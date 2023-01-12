@@ -53,10 +53,10 @@ Each column shows the $i$-$th$ mask for each cell size $k$.
 <strong>Reconstruction</strong>  
 <img src="./figures/generation.png" width="750"></br>  
 
-<strong>Anomaly detection performance</strong>  
+<strong>Anomaly detection performance (w/ validation set)</strong>  
 <img src="./figures/auroc.png" width="400"></br>  
 
-<strong>Result of training (result.json)</strong>  
+<strong>Result of training: result.json (w/ test set)</strong>  
 <details>
   <summary>root</summary>  
 
