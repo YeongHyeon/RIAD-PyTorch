@@ -17,21 +17,7 @@ class Agent(object):
     def __init__(self, **kwargs):
 
         print("\nInitializing Neural Network...")
-        self.config = {}
-        self.config['nn'] = utils.key_parsing(kwargs, 'nn', 1000)
-
-        self.config['dim_h'] = utils.key_parsing(kwargs, 'dim_h', 28)
-        self.config['dim_w'] = utils.key_parsing(kwargs, 'dim_w', 28)
-        self.config['dim_c'] = utils.key_parsing(kwargs, 'dim_c', 1)
-        self.config['ksize'] = utils.key_parsing(kwargs, 'ksize', 3)
-
-        self.config['mode_optim'] = utils.key_parsing(kwargs, 'mode_optim', 'sgd')
-        self.config['learning_rate'] = utils.key_parsing(kwargs, 'learning_rate', 1e-3)
-        self.config['mode_lr'] = utils.key_parsing(kwargs, 'mode_lr', 0)
-
-        self.config['path_ckpt'] = utils.key_parsing(kwargs, 'path_ckpt', 'Checkpoint')
-        self.config['ngpu'] = utils.key_parsing(kwargs, 'ngpu', 1)
-        self.config['device'] = utils.key_parsing(kwargs, 'device', 'cuda')
+        self.config = kwargs.copy()
 
         self.model = con.connect(nn=self.config['nn'])
 

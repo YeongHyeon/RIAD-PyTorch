@@ -13,13 +13,7 @@ class DataSet(object):
         self.x_tr, self.y_tr = shuffle(x_tr, y_tr)
         self.x_te, self.y_te = x_te, y_te
 
-        self.config = {}
-        self.config['select_norm'] = utils.key_parsing(kwargs, 'select_norm', 1)
-        self.config['masking_mode'] = utils.key_parsing(kwargs, 'masking_mode', 'disjoint_mask')
-        if(self.config['masking_mode'] == 'disjoint_mask'):
-            self.config['disjoint_n'] = utils.key_parsing(kwargs, 'disjoint_n', 3)
-        else:
-            self.config['disjoint_n'] = 1
+        self.config = kwargs.copy()
 
         # select training set
         self.x_tr = self.x_tr[self.y_tr == self.config['select_norm']]

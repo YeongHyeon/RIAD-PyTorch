@@ -9,16 +9,8 @@ class Neuralnet(nn.Module):
     def __init__(self, **kwargs):
         super().__init__()
 
-        self.config = {}
+        self.config = kwargs.copy()
         self.config['who_am_i'] = "U-Net"
-
-        self.config['dim_h'] = utils.key_parsing(kwargs, 'dim_h', 28)
-        self.config['dim_w'] = utils.key_parsing(kwargs, 'dim_w', 28)
-        self.config['dim_c'] = utils.key_parsing(kwargs, 'dim_c', 1)
-        self.config['ksize'] = utils.key_parsing(kwargs, 'ksize', 3)
-
-        self.config['filters'] = utils.key_parsing(kwargs, 'filters', None)
-        self.config['device'] = utils.key_parsing(kwargs, 'device', 'cuda')
 
         self.filters_enc = self.config['filters']
         self.filters_dec = self.config['filters'][::-1][:-1]
