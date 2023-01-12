@@ -50,6 +50,28 @@ Each column shows the $i$-$th$ mask for each cell size $k$.
 <img src="./figures/generation.png" width="750"></br>  
 <img src="./figures/auroc.png" width="300"></br>  
 
+<details>
+  <summary>root</summary>  
+* name_best:"model_2_best_auroc.pth"  
+* auroc:0.9974551381667722  
+* loss:0.0017763811201996548  
+* select_norm:1  
+* masking_mode:"disjoint_mask"  
+* disjoint_n:3  
+* nn:2000  
+* dim_h:28  
+* dim_w:28  
+* dim_c:1  
+* ksize:3  
+* mode_optim:"adam"  
+* learning_rate:0.001  
+* mode_lr:0  
+* path_ckpt:"Checkpoint"  
+* ngpu:1  
+* device:"cuda"  
+* filters:"[1, 64, 128, 256, 512]"  
+</details>
+
 ## Requirements
 * PyTorch 1.11.0
 
