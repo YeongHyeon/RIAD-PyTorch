@@ -84,4 +84,5 @@ filters:"[1, 64, 128, 256, 512]"
 * PyTorch 1.11.0
 
 ## Reference
-[1] Vitjan Zavrtanik et al. <a href="https://www.sciencedirect.com/science/article/pii/S0031320320305094">"Reconstruction by inpainting for visual anomaly detection."</a> Pattern Recognition, vol. 112, 2021.
+[1] Vitjan Zavrtanik et al. <a href="https://www.sciencedirect.com/science/article/pii/S0031320320305094">"Reconstruction by inpainting for visual anomaly detection."</a> Pattern Recognition, vol. 112, 2021.  
+[2] Taiki Inoue. <a href="https://github.com/taikiinoue45/RIAD/blob/main/riad/criterions/msgms.py">MSGMS (python module)</a>.  
