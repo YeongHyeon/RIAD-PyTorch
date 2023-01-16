@@ -1,4 +1,4 @@
-import os, random
+import os, random, neuralfilter
 import numpy as np
 import tensorflow as tf
 import source.utils as utils
@@ -43,15 +43,13 @@ class DataSet(object):
         batch_x, batch_m, batch_y = [], [], []
         for cls in range(10):
             tmp_x = np.expand_dims(utils.min_max_norm(self.x_te[self.y_te == cls][0]), axis=-1)
-            tmp_m = utils.get_disjoint_mask(disjoint_n=self.config['disjoint_n'], dim_h=self.dim_h, dim_w=self.dim_w, list_k=[2, 4])
             tmp_y = 1-int(cls==self.config['select_norm'])
 
             batch_x.append(tmp_x)
-            batch_m.append(tmp_m)
             batch_y.append(tmp_y)
 
         batch_x = np.asarray(batch_x)
-        batch_m = np.asarray(batch_m)
+        batch_m = neuralfilter.batch_generate(batch_x)
         batch_y = np.asarray(batch_y)
 
         self.batchviz = {'x':batch_x.astype(np.float32), 'm':batch_m.astype(np.float32), 'y':batch_y.astype(np.float32)}
@@ -73,7 +71,6 @@ class DataSet(object):
 
             try:
                 tmp_x = np.expand_dims(utils.min_max_norm(data[idx_d]), axis=-1)
-                tmp_m = utils.get_disjoint_mask(disjoint_n=self.config['disjoint_n'], dim_h=self.dim_h, dim_w=self.dim_w, list_k=[2, 4])
                 tmp_y = 1-int(label[idx_d]==self.config['select_norm']) # 0: normal, 1: abnormal
             except:
                 idx_d = 0
@@ -83,14 +80,13 @@ class DataSet(object):
                 break
 
             batch_x.append(tmp_x)
-            batch_m.append(tmp_m)
             batch_y.append(tmp_y)
             idx_d += 1
 
             if(len(batch_x) >= batch_size): break
 
         batch_x = np.asarray(batch_x)
-        batch_m = np.asarray(batch_m)
+        batch_m = neuralfilter.batch_generate(batch_x)
         batch_y = np.asarray(batch_y)
 
         if(ttv == 0): self.idx_tr = idx_d

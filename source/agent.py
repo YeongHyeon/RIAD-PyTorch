@@ -61,14 +61,7 @@ class Agent(object):
     def step(self, minibatch, iteration=0, epoch=0, iter_per_epoch=-1, training=False):
 
         x, m = minibatch['x'], minibatch['m']
-        x_new, y_new = [], []
-        for idx_x in range(x.shape[0]):
-            images, maskes = utils.masking(x[idx_x].copy(), m[idx_x].copy(), inverse=False)
-            x_new.extend(maskes)
-            y_new.extend(images)
-        x_new = np.asarray(x_new).astype(np.float32)
-        y_new = np.asarray(y_new).astype(np.float32)
-        x, y = x_new, y_new
+        x, y = x*m, x
 
         x, y = utils.nhwc2nchw(x), utils.nhwc2nchw(y)
         x, y = torch.tensor(x), torch.tensor(y)
@@ -115,7 +108,7 @@ class Agent(object):
 
         losses = {}
         tmp_msgms = self.msgms(y, y_hat, as_loss=False)
-        losses['msgms_b'] = torch.mean(tmp_msgms.reshape((m.shape[0], m.shape[1], self.config['dim_c'], m.shape[2], m.shape[3])), 1)
+        losses['msgms_b'] = torch.mean(tmp_msgms.reshape((m.shape[0], 1, self.config['dim_c'], m.shape[1], m.shape[2])), 1)
         losses['msgms'] = torch.mean(losses['msgms_b'])
 
         tmp_ssim = lossf.loss_ssim(y, y_hat, (1, 2, 3))
@@ -158,12 +151,6 @@ class Agent(object):
 
         try: y_hat = utils.nchw2nhwc(y_hat.detach().numpy())
         except: y_hat = utils.nchw2nhwc(y_hat.cpu().detach().numpy())
-
-        # inverse masking
-        m_b = np.expand_dims(m.reshape((m.shape[0]*m.shape[1], m.shape[2], m.shape[3])), axis=-1)
-        y_hat_new = y_hat * m_b
-        y_hat_new = y_hat_new.reshape((m.shape[0], m.shape[1], m.shape[2], m.shape[3], y_hat.shape[-1]))
-        y_hat = np.average(y_hat_new, axis=1)
 
         map = utils.nchw2nhwc(losses['msgms_b'])
 
