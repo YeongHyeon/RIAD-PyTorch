@@ -206,3 +206,14 @@ def nhwc2nchw(x):
 def nchw2nhwc(x):
 
     return np.transpose(x, [0, 2, 3, 1])
+
+def detach(x):
+
+    try: x = x.detach().numpy()
+    except:
+        try:
+            x = x.cpu().detach().numpy()
+        except:
+            pass
+
+    return x
