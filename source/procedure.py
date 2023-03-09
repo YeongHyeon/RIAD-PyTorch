@@ -27,6 +27,7 @@ def training(agent, dataset, batch_size, epochs):
     for epoch in range(epochs):
 
         step_dict = agent.step(minibatch=dataset.batchviz, training=False)
+        step_dict['name'] = dataset.batchviz['name']
         utils.plot_generation( \
             step_dict['y'], step_dict['y_hat'], step_dict['map'], \
             savepath=os.path.join(savedir, 'gen', 'generation_%08d.png' %(epoch)))
@@ -53,8 +54,9 @@ def training(agent, dataset, batch_size, epochs):
             if(minibatch['x'].shape[0] == 0): break
             step_dict = agent.step(minibatch=minibatch, training=False)
 
+            ano_score = np.max(step_dict['map'].reshape((step_dict['map'].shape[0], -1)), axis=1)
             dic_measure['label'].extend(list(minibatch['y']))
-            dic_measure['score'].extend(list(step_dict['losses']['l2_b']))
+            dic_measure['score'].extend(list(ano_score))
             if(minibatch['terminate']): break
 
         auroc_tmp = utils.measure_auroc( \
@@ -79,6 +81,7 @@ def training(agent, dataset, batch_size, epochs):
         print("Epoch [%d / %d] | Loss: %f (best at %d epoch)  AUROC: %f (best at %d epoch)" \
             %(epoch, epochs, loss_tmp, dict_best['best_loss_ep'], auroc_tmp, dict_best['best_auroc_ep']))
 
+    utils.save_pkl(path=os.path.join(savedir, 'history.pkl'), pkl=dic_history)
     return dict_best
 
 def test(agent, dataset):
@@ -91,8 +94,7 @@ def test(agent, dataset):
     for idx_model, path_model in enumerate(list_model):
         list_model[idx_model] = path_model.split('/')[-1]
 
-    dict_best = {'name_best': '', 'auroc': 0, 'loss': 0}
-
+    dict_best = {'name_best': '', 'auroc': 0, 'loss': 0, 'time_infer': time.time()}
     for idx_model, path_model in enumerate(list_model):
 
         print("\n** Test with %s" %(path_model))
@@ -102,15 +104,24 @@ def test(agent, dataset):
             utils.make_dir(path=os.path.join(savedir, name_model), refresh=False)
         except: continue
 
+        sample_index = 0
         dic_measure = {'label':[], 'score':[]}
         while(True):
-            minibatch = dataset.next_batch(batch_size=batch_size, ttv=2)
+            minibatch = dataset.next_batch(batch_size=batch_size, ttv=1)
             if(minibatch['x'].shape[0] == 0): break
             step_dict = agent.step(minibatch=minibatch, training=False)
+            step_dict['label'] = list(minibatch['y'])
+            utils.save_pkl(\
+                path=os.path.join(savedir, name_model, 'dic_%08d.pkl' %(sample_index)), pkl=step_dict)
+            sample_index += 1
 
+            ano_score = np.max(step_dict['map'].reshape((step_dict['map'].shape[0], -1)), axis=1)
             dic_measure['label'].extend(list(minibatch['y']))
-            dic_measure['score'].extend(list(step_dict['losses']['l2_b']))
+            dic_measure['score'].extend(list(ano_score))
             if(minibatch['terminate']): break
+
+        if(idx_model == 0):
+            dict_best['time_infer'] = (time.time()-dict_best['time_infer']) / dataset.num_te
 
         auroc_tmp = utils.measure_auroc(dic_measure['label'], dic_measure['score'], savepath=None)
 
@@ -118,7 +129,8 @@ def test(agent, dataset):
         df_score = pd.DataFrame.from_dict(dic_score)
         df_score.to_csv(os.path.join(savedir, "test_%s.csv" %(name_model)), index=False)
 
-        if(dict_best['auroc'] < auroc_tmp):
+        print("AUROC: %f" %(auroc_tmp))
+        if(dict_best['auroc'] <= auroc_tmp):
             dict_best['name_best'] = path_model
             dict_best['auroc'] = float(auroc_tmp)
             dict_best['loss'] = float(np.average(list(df_score.loc[df_score['label'] == 0]['score'])))
